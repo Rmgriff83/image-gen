@@ -26,11 +26,18 @@ export default defineComponent({
 
         if ( input === '' ) {
           globalStore.errors.push('Please enter a prompt.');
+          setTimeout( () => {
+              globalStore.errors = [];
+            }, 2050);
           return;
         }
 
         if ( input.includes('<') || input.includes('>') || input.includes('$') || input.includes('#') ) {
-          globalStore.errors.push('Disallowed character included in prompt.')
+          globalStore.errors.push('Disallowed character included in prompt.');
+          setTimeout( () => {
+              console.log('ran')
+              globalStore.errors = [];
+            }, 2050);
           return;
         }
 
@@ -66,8 +73,14 @@ export default defineComponent({
 
           if ( error.status === 400 ) {
             globalStore.errors.push('Sorry, this request is against OpenAi\'s content policy.');
+            setTimeout( () => {
+              globalStore.errors = [];
+            }, 2050);
           } else {
-            globalStore.errors.push('There was an error when processing your request. Please try again later.')
+            globalStore.errors.push('There was an error when processing your request. Please try again later.');
+            setTimeout( () => {
+              globalStore.errors = [];
+            }, 2050);
           }
           globalStore.loading = false;
         })

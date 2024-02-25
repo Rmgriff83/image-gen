@@ -23,8 +23,9 @@ export default defineComponent({
     async function generateImage(){
         globalStore.loading = true;
 
-        const apiKey = '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'; // Replace with your OpenAI API key
-        const apiUrl = 'https://api.openai.com/v1/images/generations'; // OpenAI Image API URL
+        console.log(process.env)
+        const apiKey = process.env.VUE_APP_API_KEY; // Replace with your OpenAI API key
+        const apiUrl = process.env.VUE_APP_API_URL; // OpenAI Image API URL
 
         const requestBody = {
             prompt: prompt.value,

@@ -24,7 +24,6 @@ import { reactive } from 'vue';
 
   function processImage(value){
     generatedImage.src = value;
-    console.log(generatedImage.src);
   }
 
 </script>

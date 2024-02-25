@@ -1,8 +1,19 @@
 <template>
   <div class="img-box">
-    <img v-if="!globalStore.loading" :src=src>
-    <p v-else><v-progress-circular model-value="20" indeterminate></v-progress-circular></p>
-    
+    <v-img
+     v-if="!globalStore.loading"
+     aspect-ratio="16/9"
+     max-height="600"
+     :src=src>
+    </v-img>
+    <p v-else>
+      <v-progress-circular model-value="20" indeterminate></v-progress-circular>
+    </p>
+  </div>
+  <div>
+    <p v-if="globalStore.errors.length > 0">
+      {{ globalStore.errors[0] }}
+    </p>
   </div>
 </template>
 
@@ -14,7 +25,6 @@ export default {
     src:String
   },
   setup(){
-
     const globalStore = global();
 
       return{
@@ -26,4 +36,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .img-box{
+    display: flex;
+    justify-content: center;
+  }
 </style>

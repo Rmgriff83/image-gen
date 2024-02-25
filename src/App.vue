@@ -1,17 +1,32 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <h1>AI Image Generator</h1>
+  <InputText v-on:imageReceived = "processImage"/>
+  <br>
+  <GeneratedImage :src="generatedImage.src"/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import InputText from './components/InputText.vue';
+import GeneratedImage from './components/GeneratedImage.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    InputText,
+    GeneratedImage
   }
 }
+</script>
+
+<script setup>
+import { reactive } from 'vue';
+  let generatedImage = reactive({src:''});
+
+  function processImage(value){
+    generatedImage.src = value;
+    console.log(generatedImage.src);
+  }
+
 </script>
 
 <style>

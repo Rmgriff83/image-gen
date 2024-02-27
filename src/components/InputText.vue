@@ -13,6 +13,7 @@
 <script>
 import { defineComponent,ref } from 'vue';
 import { global } from '@/stores/global.js';
+import { images } from '@/stores/images.js';
 import axios from 'axios';
 
 export default defineComponent({
@@ -21,6 +22,7 @@ export default defineComponent({
 
     const prompt = ref('');
     const globalStore = global();
+    const imageStore = images();
 
     async function generateImage(input){
 
@@ -35,7 +37,6 @@ export default defineComponent({
         if ( input.includes('<') || input.includes('>') || input.includes('$') || input.includes('#') ) {
           globalStore.errors.push('Disallowed character included in prompt.');
           setTimeout( () => {
-              console.log('ran')
               globalStore.errors = [];
             }, 2050);
           return;
@@ -62,6 +63,7 @@ export default defineComponent({
           headers: headers
         }).then( (res) => {
           if( res.data.data[0].url ) {
+            imageStore.actions.addImage(res.data.data[0].url, requestBody.prompt);
             this.$emit('imageReceived', res.data.data[0].url);
             globalStore.loading = false;
           } else {
@@ -71,7 +73,8 @@ export default defineComponent({
         }).catch( (e) => {
           let error = e.toJSON();
 
-          if ( error.status === 400 ) {
+          if ( error ) {
+            if ( error.status === 400 ) {
             globalStore.errors.push('Sorry, this request is against OpenAi\'s content policy.');
             setTimeout( () => {
               globalStore.errors = [];
@@ -82,11 +85,14 @@ export default defineComponent({
               globalStore.errors = [];
             }, 2050);
           }
+          } else {
+            globalStore.errors.push('You have encountered an unexpected error. Please try again later.');
+            setTimeout( () => {
+              globalStore.errors = [];
+            }, 2050);
+          }
           globalStore.loading = false;
         })
-
-        
-        // return this.$emit('imageReceived', responseData.data[0].url);
       }
       return{
         generateImage,

@@ -8,7 +8,6 @@
 <script>
 import InputText from './components/InputText.vue';
 import GeneratedImage from './components/GeneratedImage.vue';
-import { images } from '@/stores/images';
 
 export default {
   name: 'App',
@@ -22,10 +21,8 @@ export default {
 <script setup>
 import { reactive } from 'vue';
   let generatedImage = reactive({src: ''});
-  const imagesStore = images();
 
   function processImage(value){
-    imagesStore.startIndex += 1;
     generatedImage.src = value;
   }
 

@@ -1,5 +1,4 @@
 <template>
-  {{ startIndex }}
   <div v-if="!globalStore.loading">
     <div v-if="imageArray.length > 0">
       <v-carousel
@@ -71,7 +70,7 @@ export default {
       });
 
       let startIndex = computed( () => {
-        return imagesStore.startIndex - 1;
+        return imagesStore.imageArray.length - 1;
       });
 
       //delete all images
@@ -80,11 +79,9 @@ export default {
       }
 
       onMounted( () => {
-        console.log(globalStore.notifications)
         setInterval( () => {
-
           imageArray.value.forEach(image => {
-            if ( (Date.now() - image.created) >= 719000) {//7200 is roughly 2 hrs. Images are unauthenticated after 2 hrs
+            if ( (Date.now() - image.created) >= 719000) {//720000 something weird with the timestamp...Images are unauthenticated after 2 hrs
               globalStore.notifications.push(image.prompt + ' should be deleted.');
               imagesStore.actions.deleteImage(image.src);
 

@@ -3,7 +3,6 @@ import { ref } from "vue";
 
 export const images = defineStore("images", () => {
   let imageArray = ref(JSON.parse(localStorage.getItem("images")) || []);
-  let startIndex = ref(imageArray.value.length);
 
   const actions = {
     addImage(src, prompt) {
@@ -14,7 +13,6 @@ export const images = defineStore("images", () => {
       });
       localStorage.setItem("images", JSON.stringify(imageArray.value));
       imageArray.value = JSON.parse(localStorage.getItem("images"));
-      startIndex = JSON.parse(localStorage.getItem("images")).length;
     },
     deleteImages() {
       localStorage.removeItem("images");
@@ -27,7 +25,6 @@ export const images = defineStore("images", () => {
         if (image.src !== src) {
           console.log("deleted image " + image.prompt);
           images.push(image);
-          startIndex = images.length - 1;
         }
       });
 
@@ -39,6 +36,5 @@ export const images = defineStore("images", () => {
   return {
     actions,
     imageArray,
-    startIndex,
   };
 });

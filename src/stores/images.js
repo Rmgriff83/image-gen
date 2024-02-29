@@ -16,6 +16,24 @@ export const images = defineStore("images", () => {
       imageArray.value = JSON.parse(localStorage.getItem("images"));
       startIndex = JSON.parse(localStorage.getItem("images")).length;
     },
+    deleteImages() {
+      localStorage.removeItem("images");
+      imageArray.value = [];
+    },
+    deleteImage(src) {
+      let images = [];
+
+      imageArray.value.forEach((image) => {
+        if (image.src !== src) {
+          console.log("deleted image " + image.prompt);
+          images.push(image);
+          startIndex = images.length - 1;
+        }
+      });
+
+      imageArray.value = images;
+      localStorage.setItem("images", JSON.stringify(images));
+    },
   };
 
   return {

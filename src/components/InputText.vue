@@ -1,11 +1,15 @@
 <template>
   <div class="input-box">
     <form action="">
-      <label for="image-prompt">Input Prompt</label>
+      <label for="image-prompt">
+        Input Prompt
+      </label>
       <br>
-      <input id="image-prompt" name="image-prompt" type="text" v-model="prompt">
+      <v-text-field id="image-prompt" name="image-prompt" type="text" v-model="prompt"></v-text-field>
       <br>
-      <button type="submit" @click.prevent="generateImage(prompt)">Submit</button>
+      <v-btn type="submit" @click.prevent="generateImage(prompt)">
+        Submit
+      </v-btn>
     </form>
   </div>
 </template>

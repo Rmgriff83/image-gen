@@ -1,4 +1,5 @@
 <template>
+  {{ startIndex }}
   <div v-if="!globalStore.loading">
     <div v-if="imageArray.length > 0">
       <v-carousel
@@ -8,10 +9,16 @@
         <v-carousel-item v-for="image in imageArray" :key="image.prompt">
           <v-img
             :src=image.src
+            aspect-ratio="16/9"
           >
           </v-img>
         </v-carousel-item>
       </v-carousel>
+      <br>
+      <v-btn
+      @click="deleteImages()">
+        Delete Images
+      </v-btn>
     </div>
     <p v-else>Input text prompt to generate an image</p>
   </div>
@@ -67,21 +74,26 @@ export default {
         return imagesStore.startIndex - 1;
       });
 
+      //delete all images
+      function deleteImages(){
+        imagesStore.actions.deleteImages();
+      }
+
       onMounted( () => {
         console.log(globalStore.notifications)
-        // setInterval( () => {
+        setInterval( () => {
 
-        //   imageArray.value.forEach(image => {
-        //     console.log((Date.now() - image.created) >= 72000)
-        //     console.log(image.prompt)
-        //     if ( (Date.now() - image.created) >= 72000 ) {//7200 is roughly 2 hrs. Images are unauthenticated after 2 hrs
-        //       globalStore.notifications.push(image.prompt + ' should be deleted.');
-        //       setTimeout( () => {
-        //         globalStore.notifications = [];
-        //       }, 2050);
-        //     }
-        //   });
-        // }, 5000);
+          imageArray.value.forEach(image => {
+            if ( (Date.now() - image.created) >= 719000) {//7200 is roughly 2 hrs. Images are unauthenticated after 2 hrs
+              globalStore.notifications.push(image.prompt + ' should be deleted.');
+              imagesStore.actions.deleteImage(image.src);
+
+              setTimeout( () => {
+                globalStore.notifications = [];
+              }, 2050);
+            }
+          });
+        }, 15000);
       });
 
       return{
@@ -90,6 +102,7 @@ export default {
         notifications,
         imageArray,
         startIndex,
+        deleteImages
       }
     }
   }
